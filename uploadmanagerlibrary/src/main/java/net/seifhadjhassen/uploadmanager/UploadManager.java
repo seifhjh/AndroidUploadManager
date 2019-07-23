@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,26 +52,22 @@ public  class UploadManager {
         AsyncLoader.LoaderCallBackHandler callHandler =new AsyncLoader.LoaderCallBackHandler() {
             @Override
             public void onStartUploading() {
-                Log.e("Upload","onStartUploading :");
 
             }
 
             @Override
             public void uploadComplete(String response) {
-                Log.e("Upload","uploadComplete :"+response);
 
             }
 
             @Override
             public void failedWithError(Throwable error) {
-                Log.e("Upload","failedWithError :"+error.getMessage());
 
             }
 
             @Override
             public void progressUpdate(long bytesWritten, long bytesTotal) {
                 long prog=bytesWritten/(bytesTotal/100);
-                //Log.e("Upload","progressUpdate :"+prog+" %");
 
             }
 
@@ -81,7 +78,6 @@ public  class UploadManager {
 
             @Override
             public void onFinish() {
-                Log.e("Upload","onFinish :");
 
             }
         };
@@ -115,8 +111,6 @@ public  class UploadManager {
             @Override
             public void uploadComplete(String response) {
 
-
-                Log.e("uploadManager","uploadComplete "+response);
 
                 uploadComplitListener.onComplite(response);
 
@@ -175,7 +169,6 @@ public  class UploadManager {
             @Override
             public void uploadComplete(String response) {
 
-                Log.e("uploadManager","uploadComplete "+response);
 
                 progressListener.onComplite(response);
 
@@ -193,7 +186,6 @@ public  class UploadManager {
 
             @Override
             public void progressUpdate(long bytesWritten, long bytesTotal) {
-                Log.e("uploadmanager",bytesWritten+"");
                 progressListener.onProgress(bytesWritten/(bytesTotal/100));
 
             }
@@ -242,13 +234,11 @@ public  class UploadManager {
             public void uploadComplete(String response) {
                 String encode = null;
 
-                Log.e("uploadManager","uploadComplete "+response);
                 try {
                     encode = URLEncoder.encode(response, "ISO-8859-1");
 
                     response = URLDecoder.decode(encode, "UTF-8");
                     JSONObject jsonArray = new JSONObject(response);
-                    Log.e("jsonlength setUserInfo", response.length() + " " );
 
                     JSONObject master = jsonArray.getJSONObject("master");
                     uploadEventListener.uploadComplete(master.getString("url"));
@@ -310,6 +300,16 @@ public  class UploadManager {
 
     }
 
+    public static void uploadFileFromFile(final Context context, final List<File> listFile, final OnProgressMultiListener progressListener){
+
+        int numFiles=listFile.size();
+        int index=0;
+        int lastIndex=listFile.size()-1;
+        List<String> listLinkFile=new ArrayList<>();
+        uploadMultiFiles(context,listFile,listLinkFile,index,lastIndex,numFiles,progressListener);
+
+
+    }
 
     private static void uploadMultiFiles(final Context context, final List<File> listFile, final List<String> listResponse, final int index, final int lastIndex, final int numFiles, final OnProgressMultiListener progressListener) {
 
@@ -321,13 +321,9 @@ public  class UploadManager {
                 public void onProgress(long percent) {
                     double percOfOnFile=(double)(100/numFiles);
                     double percOfCurrentFile=percOfOnFile*(indexx+1);
-                    Log.e("Uploadmanager","percOfOnFile ="+percOfOnFile);
 
-                    Log.e("Uploadmanager",percent+"/"+"(100/"+percOfCurrentFile+")");
 
                     double perc=100/percOfCurrentFile;
-                    Log.e("Uploadmanager",percent+"/"+perc+" %");
-                    Log.e("Uploadmanager",percent/perc+" %");
 
                     progressListener.onProgress((long) (percent/perc));
 
