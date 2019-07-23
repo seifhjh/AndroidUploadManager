@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Android Upload Manager</string>
+    <string name="url">http</string>
+    <string name="browse_upload"><![CDATA[Browse & Upload]]></string>
+</resources>
