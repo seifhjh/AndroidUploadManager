@@ -94,7 +94,7 @@ try{
         $result=array(
             'master'=>array(
             'etat' => "succes",
-            'url'=> "$host/public/scontent/$stored_name"
+            'url'=> "$host/path/file/$stored_name"
             ));
     }else{
         $result=array(
