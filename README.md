@@ -83,13 +83,13 @@ try{
     
     $ext = pathinfo($path, PATHINFO_EXTENSION);
     $stored_name ="file-$name.$ext";
-    if (!file_exists('/path/file')) {
-        mkdir('../public/scontent', 0777, true);
+    if (!file_exists('path/file')) {
+        mkdir('path/file/', 0777, true);
         }
         
-    if(move_uploaded_file($_FILES['file']['tmp_name'],"/path/file/$stored_name"))
+    if(move_uploaded_file($_FILES['file']['tmp_name'],"path/file/$stored_name"))
     {
-        mime_content_type('/path/file/'.$stored_name);
+        mime_content_type('path/file/'.$stored_name);
 
         $result=array(
             'master'=>array(
